@@ -1,0 +1,73 @@
+<mxfile host="65bd71144e">
+    <diagram id="XM1yXPckzl_5gWJAH2Ec" name="ページ-1">
+        <mxGraphModel dx="945" dy="492" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;b&gt;&lt;i&gt;試合を見ていて知らなかったり忘れてしまったプレミアリーグのサッカー選手を知れるサイト&lt;/i&gt;&lt;/b&gt;" vertex="1">
+                    <mxGeometry height="30" width="260" x="230" y="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="知らない選手の情報をサイトで検索する" vertex="1">
+                    <mxGeometry height="60" width="120" x="450" y="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="選手情報が表示される" vertex="1">
+                    <mxGeometry height="60" width="120" x="600" y="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="選手情報を登録する" vertex="1">
+                    <mxGeometry height="60" width="120" x="160" y="200" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="私が登録する" vertex="1">
+                    <mxGeometry height="60" width="120" x="160" y="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#f8cecc;strokeColor=#b85450;" value="準備" vertex="1">
+                    <mxGeometry height="60" width="120" x="160" y="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#f8cecc;strokeColor=#b85450;" value="検索" vertex="1">
+                    <mxGeometry height="60" width="120" x="450" y="110" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="データベースで作る" vertex="1">
+                    <mxGeometry height="60" width="120" x="290" y="450" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-15" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="検索欄から検索" vertex="1">
+                    <mxGeometry height="60" width="120" x="450" y="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-16" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="結果表示" vertex="1">
+                    <mxGeometry height="60" width="120" x="600" y="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-17" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="原所属、年齢、前所属だけテキストで作る" vertex="1">
+                    <mxGeometry height="60" width="120" x="290" y="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-18" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="所属年数、昨年得点率、昨年出場数、出身国、" vertex="1">
+                    <mxGeometry height="60" width="120" x="290" y="370" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-20" edge="1" parent="1" style="endArrow=none;html=1;" value="">
+                    <mxGeometry height="50" relative="1" width="50" as="geometry">
+                        <mxPoint x="760" y="274" as="sourcePoint"/>
+                        <mxPoint x="130" y="274" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-21" edge="1" parent="1" style="endArrow=none;html=1;" value="">
+                    <mxGeometry height="50" relative="1" width="50" as="geometry">
+                        <mxPoint x="760" y="360" as="sourcePoint"/>
+                        <mxPoint x="130" y="360" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-22" edge="1" parent="1" style="endArrow=none;html=1;" value="">
+                    <mxGeometry height="50" relative="1" width="50" as="geometry">
+                        <mxPoint x="760" y="440" as="sourcePoint"/>
+                        <mxPoint x="130" y="440" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-23" parent="1" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;shapeInside=1;fixedSize=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="ウォーキングスケルトン" vertex="1">
+                    <mxGeometry height="60" width="120" x="20" y="290" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-24" parent="1" style="shape=step;perimeter=stepPerimeter;whiteSpace=wrap;html=1;shapeInside=1;fixedSize=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="データ充実" vertex="1">
+                    <mxGeometry height="60" width="120" x="20" y="370" as="geometry"/>
+                </mxCell>
+                <mxCell id="9KW1eAgl8fZGU_5UW7xM-25" parent="1" style="rounded=1;whiteSpace=wrap;html=1;roundedPerimeter=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="美しいサイト" vertex="1">
+                    <mxGeometry height="60" width="120" x="600" y="370" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

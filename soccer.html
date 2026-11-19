@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サッカー選手検索</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      background-color: #f1f5f9;
+      color: #1e293b;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .panel {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin-bottom: 24px;
+    }
+    .search-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+    input[type="text"], select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px;
+      font-size: 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: #fff;
+    }
+    .status {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #d97706;
+    }
+    .status:empty {
+      display: none;
+    }
+    .results {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: #fff;
+      padding: 18px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      border-top: 4px solid #2563eb;
+    }
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .team-badge {
+      background: #e2e8f0;
+      color: #334155;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .pos-badge {
+      background: #dbeafe;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .player-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 6px 0 10px;
+      color: #0f172a;
+    }
+    .player-details {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 14px;
+      color: #475569;
+      line-height: 1.7;
+    }
+    .player-details span {
+      font-weight: bold;
+      color: #334155;
+    }
+    .raw-text {
+      white-space: pre-wrap;
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 0;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>⚽ サッカー選手データベース</h1>
+
+  <div class="panel">
+    <div class="search-grid">
+      <input type="text" id="nameInput" placeholder="選手名 (例: さか, サカ, Saka...)">
+      <input type="text" id="countryInput" placeholder="国・代表 (例: いんぐらんど, スペイン...)">
+      <select id="teamSelect">
+        <option value="">すべてのチーム</option>
+      </select>
+    </div>
+    <div id="status" class="status"></div>
+  </div>
+
+  <div id="results" class="results"></div>
+
+  <script>
+    // ファイル名とカタカナチーム名の対応表（指定順）
+    const teamConfig = [
+      { file: 'arsenal.txt', name: 'アーセナル' },
+      { file: 'manchester_city_roster.txt', name: 'マンチェスター・シティ' },
+      { file: 'manchester_united.txt', name: 'マンチェスター・ユナイテッド' },
+      { file: 'aston_villa.txt', name: 'アストン・ヴィラ' },
+      { file: 'liverpool.txt', name: 'リバプール' },
+      { file: 'bournemouth.txt', name: 'ボーンマス' },
+      { file: 'sunderland.txt', name: 'サンダーランド' },
+      { file: 'brighton.txt', name: 'ブライトン' },
+      { file: 'brentford.txt', name: 'ブレントフォード' },
+      { file: 'chelsea.txt', name: 'チェルシー' },
+      { file: 'fulham.txt', name: 'フラム' },
+      { file: 'newcastle.txt', name: 'ニューカッスル・ユナイテッド' },
+      { file: 'everton.txt', name: 'エバートン' },
+      { file: 'leeds.txt', name: 'リーズ・ユナイテッド' },
+      { file: 'crystal_palace.txt', name: 'クリスタル・パレス' },
+      { file: 'nottingham_forest.txt', name: 'ノッティンガム・フォレスト' },
+      { file: 'tottenham.txt', name: 'トッテナム・ホットスパー' },
+      { file: 'coventry.txt', name: 'コベントリー' },
+      { file: 'ipswich.txt', name: 'イプスウィッチ' },
+      { file: 'hull_city.txt', name: 'ハル・シティ' }
+    ];
+
+    let allPlayers = [];
+    let loadedTeams = [];
+
+    const nameInput = document.getElementById('nameInput');
+    const countryInput = document.getElementById('countryInput');
+    const teamSelect = document.getElementById('teamSelect');
+    const resultsDiv = document.getElementById('results');
+    const statusDiv = document.getElementById('status');
+
+    function normalizeText(str) {
+      if (!str) return '';
+      return str
+        .normalize('NFKC')
+        .replace(/[\u3041-\u3096]/g, ch => String.fromCharCode(ch.charCodeAt(0) + 0x60))
+        .toLowerCase();
+    }
+
+    function parseTxtContent(teamName, text) {
+      const blocks = text.trim().split(/\r?\n\s*\r?\n/);
+
+      blocks.forEach(block => {
+        const cleanBlock = block.trim();
+        if (!cleanBlock) return;
+
+        const lines = cleanBlock.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+
+        if (lines.length >= 4) {
+          allPlayers.push({
+            isStructured: true,
+            team: teamName,
+            name: lines[0] || '',
+            number: lines[1] || '',
+            position: lines[2] || '',
+            country: lines[3] || '',
+            birth: lines[4] || '',
+            physical: lines[5] || '',
+            searchName: normalizeText(lines[0]),
+            searchCountry: normalizeText(lines[3])
+          });
+        } else {
+          allPlayers.push({
+            isStructured: false,
+            team: teamName,
+            rawText: cleanBlock,
+            searchName: normalizeText(cleanBlock),
+            searchCountry: normalizeText(cleanBlock)
+          });
+        }
+      });
+    }
+
+    function updateTeamDropdown() {
+      teamSelect.innerHTML = '<option value="">すべてのチーム</option>';
+      loadedTeams.forEach(team => {
+        const opt = document.createElement('option');
+        opt.value = team;
+        opt.textContent = team;
+        teamSelect.appendChild(opt);
+      });
+    }
+
+    async function loadFilesAutomatically() {
+      for (const item of teamConfig) {
+        try {
+          const response = await fetch(item.file);
+          if (response.ok) {
+            const text = await response.text();
+            parseTxtContent(item.name, text);
+            if (!loadedTeams.includes(item.name)) {
+              loadedTeams.push(item.name);
+            }
+          }
+        } catch (e) {}
+      }
+
+      if (loadedTeams.length > 0 && allPlayers.length > 0) {
+        updateTeamDropdown();
+        statusDiv.textContent = '';
+        renderResults();
+      } else {
+        statusDiv.textContent = '⚠️ VS Code右下の「Go Live」から開いてください。';
+      }
+    }
+
+    function renderResults() {
+      const nameQuery = normalizeText(nameInput.value.trim());
+      const countryQuery = normalizeText(countryInput.value.trim());
+      const selectedTeam = teamSelect.value;
+
+      resultsDiv.innerHTML = '';
+
+      if (allPlayers.length === 0) return;
+
+      if (!nameQuery && !countryQuery && !selectedTeam) {
+        resultsDiv.innerHTML = '<p style="color:#64748b;">選手名・国名を入力するか、チームを選択してください。</p>';
+        return;
+      }
+
+      const filtered = allPlayers.filter(p => {
+        const matchName = !nameQuery || p.searchName.includes(nameQuery);
+        const matchCountry = !countryQuery || p.searchCountry.includes(countryQuery);
+        const matchTeam = !selectedTeam || p.team === selectedTeam;
+        return matchName && matchCountry && matchTeam;
+      });
+
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = '<p>該当する選手が見つかりませんでした。</p>';
+        return;
+      }
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        if (p.isStructured) {
+          card.innerHTML = `
+            <div class="card-header">
+              <span class="team-badge">${escapeHtml(p.team)}</span>
+              <span class="pos-badge">#${escapeHtml(p.number)} ${escapeHtml(p.position)}</span>
+            </div>
+            <div class="player-name">${escapeHtml(p.name)}</div>
+            <ul class="player-details">
+              <li><span>国籍/代表：</span>${escapeHtml(p.country)}</li>
+              <li><span>生年月日：</span>${escapeHtml(p.birth)}</li>
+              <li><span>体格：</span>${escapeHtml(p.physical)}</li>
+            </ul>
+          `;
+        } else {
+          card.innerHTML = `
+            <div class="card-header">
+              <span class="team-badge">${escapeHtml(p.team)}</span>
+            </div>
+            <pre class="raw-text">${escapeHtml(p.rawText)}</pre>
+          `;
+        }
+        resultsDiv.appendChild(card);
+      });
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    nameInput.addEventListener('input', renderResults);
+    countryInput.addEventListener('input', renderResults);
+    teamSelect.addEventListener('change', renderResults);
+
+    loadFilesAutomatically();
+  </script>
+</body>
+</html>
