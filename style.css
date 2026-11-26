@@ -1,3 +1,7 @@
+:root {
+  --card-scale: 1;
+}
+
 body {
   font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
   background-color: #f1f5f9;
@@ -37,6 +41,42 @@ select {
   background: #fff;
 }
 
+.size-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.size-control input[type="range"] {
+  width: 180px;
+  cursor: pointer;
+}
+
+#sizeValue {
+  min-width: 45px;
+  font-weight: bold;
+  color: #1e293b;
+}
+
+.reset-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  background: #e2e8f0;
+  color: #334155;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background: #cbd5e1;
+}
+
 .status {
   margin-top: 12px;
   font-size: 14px;
@@ -48,10 +88,11 @@ select {
   display: none;
 }
 
+/* 150%以上で1列（1個ずつ）になり、250%まで画面からはみ出さずに拡大 */
 .results {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(350px * var(--card-scale))), 1fr));
+  gap: calc(16px * var(--card-scale));
 }
 
 .guide-message {
@@ -59,6 +100,7 @@ select {
 }
 
 .card {
+  zoom: var(--card-scale);
   background: #fff;
   padding: 18px;
   border-radius: 10px;
